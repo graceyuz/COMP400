@@ -14,7 +14,7 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
     # getting the video IDs from the playlist id
     def get_video_ids(playlist_id):
         """
-        Retreives the YouTube video IDs from a given playlist ID
+        Retrieves the YouTube video IDs from a given playlist ID
 
         Args:
             playlist_id: A string which is a valid YouTube playlist ID 

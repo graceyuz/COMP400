@@ -1,1 +1,17 @@
 notes.txt
+
+# virtual environments
+.venv/
+venv/
+env/
+
+
+# bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# 3nvironment files
+.env

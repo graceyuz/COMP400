@@ -1,1 +1,2 @@
-#Using the YouTube API to get comments from videos and put them into a spreadsheet
+# Part 1:
+# Retreival of comments from YouTube playlist -> Video IDs -> Comments collection

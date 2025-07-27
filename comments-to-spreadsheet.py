@@ -68,45 +68,63 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
 
         # going through all video IDs and getting all comments
         for video_id in video_ids:
-
+                
             # next page token to track if there are unseen comments
             next_page_token = None
+            
+            # continuous until there is no next page
+            while True:
 
-            # requesting the comments
-            comment_request = youtube.commentThreads().list(
-                part="snippet",                 # want snippet
-                videoId=video_id,               # specify video ID
-                maxResults=100,                  # most results possible
-                textFormat="plainText",         # for csv file
-                pageToken=next_page_token       # to get through pages
-            )
+                 # requesting the comments
+                comment_request = youtube.commentThreads().list(
+                    part="snippet",                 # want snippet
+                    videoId=video_id,               # specify video ID
+                    maxResults=100,                  # most results possible
+                    textFormat="plainText",         # for csv file
+                    pageToken=next_page_token       # to get through pages
+                )
 
-            comment_response = comment_request.execute()
+                comment_response = comment_request.execute()
 
-            # comment_response is a dictionary which contains key 'items'
-            # 'items' -> list of comment threads which we want to iterate through 
-            for item in comment_response["items"]:
-                # each item is a dictionary
-                # inside each item dictionary there is a snippet dictionary
-                    # which contains a topLevelComment dictionary
-                    # which contains a snippet dictionary
+                # comment_response is a dictionary which contains key 'items'
+                # 'items' -> list of comment threads which we want to iterate through 
+                for item in comment_response["items"]:
+                    # each item is a dictionary
+                    # inside each item dictionary there is a snippet dictionary
+                        # which contains a topLevelComment dictionary
+                        # which contains a snippet dictionary
                 
-                # get access to information we want in the second snippet
-                comment_info = item["snippet"]["topLevelComment"]["snippet"]
+                    # get access to information we want in the second snippet
+                    comment_info = item["snippet"]["topLevelComment"]["snippet"]
 
-                # getting the text, date, and likes of comment
-                comment_text = comment_info["textDisplay"]
-                publish_date = comment_info["publishedAt"]
-                like_count = comment_info["likeCount"]
+                    # getting the text, date, and likes of comment
+                    comment_text = comment_info["textDisplay"]
+                    publish_date = comment_info["publishedAt"]
+                    like_count = comment_info["likeCount"]
 
-                # append to list of comments
-                comments.append([publish_date, comment_text, like_count])
+                    # append to list of comments
+                    comments.append([publish_date, comment_text, like_count])
 
-            # next page token
-            next_page_token = comment_response["nextPageToken"]
+                # next page token
+                next_page_token = comment_response.get("nextPageToken")
 
-            # if there is no next page token, done
-            if not next_page_token:
-                break
+                # if there is no next page token, done
+                if not next_page_token:
+                    break
 
         return comments
+
+
+    # calling 
+    playlist_id = input("Playlist ID: ")
+
+    comments = get_comments(get_video_ids(playlist_id))
+
+    # creating csv file
+    with open("youtube_comments.csv", mode="w", newline="", encoding="utf-8") as file:
+        writer = csv.writer(file)
+        # no need for a header row
+        writer.writerows(comments)
+
+    # confirmation message
+    print(f"Saved {len(comments)} comments to youtube_comments.csv")

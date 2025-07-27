@@ -99,11 +99,10 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
 
                     # getting the text, date, and likes of comment
                     comment_text = comment_info["textDisplay"]
-                    publish_date = comment_info["publishedAt"]
                     like_count = comment_info["likeCount"]
 
                     # append to list of comments
-                    comments.append([publish_date, comment_text, like_count])
+                    comments.append([like_count, comment_text])
 
                 # next page token
                 next_page_token = comment_response.get("nextPageToken")

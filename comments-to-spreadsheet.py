@@ -8,9 +8,6 @@ from googleapiclient.discovery import build
 # using an environment variable for api key
 api_key = os.environ["API_KEY"]
 
-# getting the wanted playlist
-playlist_id = input("Playlist Id: ")
-
 # building 
 with build("youtube", "v3", developerKey=api_key) as youtube:
 
@@ -29,7 +26,28 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
         
         """
 
-        return None    
+        # 
+        video_ids = []
+
+        # get the video ids from specified playlist
+        playlist_request = youtube.playlistItems().list(
+            part="contentDetails",
+            playlistId=playlist_id,
+            maxResults=10   # decided that playlists will be of length 10
+        )
+
+        playlist_response = playlist_request.execute()
+
+        # Getting video IDs:
+        # 'playlist_response' is a dictionary which contains a key called 'items',
+        # 'items' -> a list of items (each representing a video in the playlist).
+        # Each item is a dictionary which contains a 'contentDetails' key,
+        # 'contentDetails' -> another dictionary containing a 'videoId' key.
+        # That 'videoId' -> actual video ID.
+        for item in playlist_response["items"]:
+            video_ids.append(item["contentDetails"]["videoId"])
+
+        return video_ids    
     
 
     def get_comments():
@@ -46,5 +64,3 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
         """
 
         return None
-    
-    

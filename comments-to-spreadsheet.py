@@ -26,7 +26,7 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
         
         """
 
-        # 
+        # list of all video ids
         video_ids = []
 
         # get the video ids from specified playlist
@@ -38,19 +38,19 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
 
         playlist_response = playlist_request.execute()
 
-        # Getting video IDs:
+        # getting video IDs:
         # 'playlist_response' is a dictionary which contains a key called 'items',
-        # 'items' -> a list of items (each representing a video in the playlist).
-        # Each item is a dictionary which contains a 'contentDetails' key,
-        # 'contentDetails' -> another dictionary containing a 'videoId' key.
-        # That 'videoId' -> actual video ID.
+        # 'items' -> a list of items (each representing a video in the playlist)
+        # each item is a dictionary which contains a 'contentDetails' key,
+        # 'contentDetails' -> another dictionary containing a 'videoId' key
+        # that 'videoId' -> actual video ID.
         for item in playlist_response["items"]:
             video_ids.append(item["contentDetails"]["videoId"])
 
         return video_ids    
     
 
-    def get_comments():
+    def get_comments(video_ids):
         """
         Retreives the comments from the supplied YouTube video IDs
 
@@ -63,4 +63,50 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
             of the comment
         """
 
-        return None
+        # list of all comments, publish dates, and likes
+        comments = []
+
+        # going through all video IDs and getting all comments
+        for video_id in video_ids:
+
+            # next page token to track if there are unseen comments
+            next_page_token = None
+
+            # requesting the comments
+            comment_request = youtube.commentThreads().list(
+                part="snippet",                 # want snippet
+                videoId=video_id,               # specify video ID
+                maxResults=100,                  # most results possible
+                textFormat="plainText",         # for csv file
+                pageToken=next_page_token       # to get through pages
+            )
+
+            comment_response = comment_request.execute()
+
+            # comment_response is a dictionary which contains key 'items'
+            # 'items' -> list of comment threads which we want to iterate through 
+            for item in comment_response["items"]:
+                # each item is a dictionary
+                # inside each item dictionary there is a snippet dictionary
+                    # which contains a topLevelComment dictionary
+                    # which contains a snippet dictionary
+                
+                # get access to information we want in the second snippet
+                comment_info = item["snippet"]["topLevelComment"]["snippet"]
+
+                # getting the text, date, and likes of comment
+                comment_text = comment_info["textDisplay"]
+                publish_date = comment_info["publishedAt"]
+                like_count = comment_info["likeCount"]
+
+                # append to list of comments
+                comments.append([publish_date, comment_text, like_count])
+
+            # next page token
+            next_page_token = comment_response["nextPageToken"]
+
+            # if there is no next page token, done
+            if not next_page_token:
+                break
+
+        return comments

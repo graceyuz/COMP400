@@ -8,7 +8,7 @@ analyzer = SentimentIntensityAnalyzer()
 
 # the csv file name
 file_name = input("File name: ")
-
+output_file = input("New file name to save with sentiment: ")
 
 def vader_analysis (comment):
     """
@@ -36,9 +36,12 @@ total_comments = 0
 unweighted_comments = 0
 total_sentiment = 0
 
-with open(file_name, "r", encoding="utf-8") as csv_file:
+with open(file_name, "r", encoding="utf-8") as csv_file, \
+     open(output_file, "w", encoding="utf-8", newline="") as output_csv:
     # specify the delimeter is a comma
     reader = csv.reader(csv_file, delimiter=",")
+    #writting to new file
+    writer = csv.writer(output_csv)
 
     # for each row, send the comment to VADER and weight with likes
     for row in reader:
@@ -47,6 +50,9 @@ with open(file_name, "r", encoding="utf-8") as csv_file:
 
         # check like count
         like_count = int(row[0])
+
+        # add sentiment score and all else to new file for review 
+        writer.writerow([like_count, row[1], sentiment])
 
         if like_count > 0:
             # counting sentiment of all likes
@@ -73,3 +79,6 @@ print(round(neu_comments/total_comments*100,2), "% neutral", ", number of neutra
 print("total # comments: ", total_comments, sep="")
 print(round(total_sentiment/total_comments, 4), "was the average sentiment")
 print("Number of comments before weight:", unweighted_comments)
+
+# confirmation
+print(f"Sentiment data saved to {output_file}")

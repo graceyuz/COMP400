@@ -114,16 +114,18 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
         return comments
 
 
-    # calling 
+    # calling and output
     playlist_id = input("Playlist ID: ")
+
+    name_file = input("Name of csv file to generate: ")
 
     comments = get_comments(get_video_ids(playlist_id))
 
     # creating csv file
-    with open("youtube_comments.csv", mode="w", newline="", encoding="utf-8") as file:
+    with open(name_file, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         # no need for a header row
         writer.writerows(comments)
 
     # confirmation message
-    print(f"Saved {len(comments)} comments to youtube_comments.csv")
+    print(f"Saved {len(comments)} comments to {name_file}.csv")

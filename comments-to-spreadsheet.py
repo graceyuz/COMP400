@@ -1,5 +1,5 @@
 # Part 1:
-# Retreival of comments from YouTube playlist -> Video IDs -> Comments collection
+# Retreival of comments from YouTube playlist -> Video IDs -> Comments collection csv
 
 import os
 import csv
@@ -128,4 +128,4 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
         writer.writerows(comments)
 
     # confirmation message
-    print(f"Saved {len(comments)} comments to {name_file}.csv")
+    print(f"Saved {len(comments)} comments to {name_file}")

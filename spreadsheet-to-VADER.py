@@ -1,5 +1,5 @@
 # Part 2:
-# Comments from the spreadsheet -> VADER evalutation -> Balancing with likes
+# Comments from the spreadsheet -> VADER evalutation -> Balancing with likes -> CSV
 
 import csv
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -76,12 +76,20 @@ with open(file_name, "r", encoding="utf-8") as csv_file, \
         unweighted_comments += 1
 
 # output
-print(round(pos_comments/total_comments_weighted*100, 2), "% positive", ", number of positive comments: ", pos_comments, sep="")
-print(round(neg_comments/total_comments_weighted*100, 2), "% negative", ", number of negative comments: ", neg_comments, sep="")
-print(round(neu_comments/total_comments_weighted*100,2), "% neutral", ", number of neutral comments: ", neu_comments, sep="")
-print("total # weighted comments: ", total_comments_weighted, sep="")
-print(round(total_sentiment/total_comments_weighted, 4), "was the average sentiment")
-print("Number of comments before weight:", unweighted_comments)
+print(f"{round(pos_comments/total_comments_weighted*100, 2)}% positive, number of positive comments (weighted): {pos_comments}")
+print(f"{round(neg_comments/total_comments_weighted*100, 2)}% negative, number of negative comments (weighted): {neg_comments}")
+print(f"{round(neu_comments/total_comments_weighted*100, 2)}% neutral, number of neutral comments (weighted): {neu_comments}")
+
+print()
+
+print(f"Total # of weighted comments: {total_comments_weighted}")
+print(f"Average sentiment: {round(total_sentiment/total_comments_weighted, 4)}")
+
+print()
+
+print(f"Number of comments before weight: {unweighted_comments}")
+
+print()
 
 # confirmation
 print(f"Sentiment data saved to {output_file}")

@@ -20,7 +20,7 @@ For the separate Python scripts, each has different dependencies:
 * `spreadsheet-to-VADER.py` depends on vaderSentiment for sentiment analysis
 
 In order to use `comments-to-spreadsheet.py`, you must have a valid YouTube API key stored as an environment variable. Set the variable like this:
-    `YOUTUBE_API_KEY='your-api-key-here'`
+    `API_KEY='your-api-key-here'`
 
 ## Acknowledgements
 The included comment data was retrieved via the YouTube Data API v3. All data is publicly available, and no user-identifiable information has been included, in accordance with YouTube’s API Services Terms of Service.

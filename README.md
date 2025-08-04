@@ -3,11 +3,11 @@
 ## Introduction
 For my COMP400 project I chose to look into if female YouTubers receive more negative comments than male YouTubers by doing a literature review as well as a replication/improvement of methodologies. 
 
-The final paper found [here](https://github.com/graceyuz/COMP400/blob/main/Final-Paper.pdf) provides the full literature review, an explanation of methodology, and the results of the study.
+The final paper found [here](https://github.com/graceyuz/COMP400/blob/main/COMP400-Final-Paper.pdf) provides the full literature review, an explanation of methodology, and the results of the study.
 
 ## Repository Organization
 This repository includes all information for the project:
-* The final paper is found [here](https://github.com/graceyuz/COMP400/blob/main/Final-Paper.pdf)
+* The final paper is found [here](https://github.com/graceyuz/COMP400/blob/main/COMP400-Final-Paper.pdf)
 * The Python script which pulls and stores the YouTube comments is found [here](https://github.com/graceyuz/COMP400/blob/main/comments-to-spreadsheet.py)
 * The Python script which evaluates the sentiment of the YouTube comments is found [here](https://github.com/graceyuz/COMP400/blob/main/spreadsheet-to-VADER.py)
 * All comment data used in the study is found [here](https://github.com/graceyuz/COMP400/tree/main/Comment-Data). This comment data is organized by YouTuber, and each YouTuber has two CSV files:

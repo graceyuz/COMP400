@@ -1,5 +1,5 @@
 # Part 1:
-# Retreival of comments from YouTube playlist -> Video IDs -> Comments collection csv
+# Retrieval of comments from YouTube playlist -> Video IDs -> Comments collection csv
 
 import os
 import csv
@@ -58,9 +58,8 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
             video_ids: A list containing valid YouTube video IDs 
         
         Returns:
-            A nested list containing the video's comments, the date
-            that the comment was published, and the number of likes 
-            of the comment
+            A nested list containing the video's comments 
+            and the number of likes of the comment
         """
 
         # list of all comments, publish dates, and likes
@@ -89,11 +88,8 @@ with build("youtube", "v3", developerKey=api_key) as youtube:
                 # comment_response is a dictionary which contains key 'items'
                 # 'items' -> list of comment threads which we want to iterate through 
                 for item in comment_response["items"]:
-                    # each item is a dictionary
-                    # inside each item dictionary there is a snippet dictionary
-                        # which contains a topLevelComment dictionary
-                        # which contains a snippet dictionary
-                
+                    
+                    # Each item contains: snippet → topLevelComment → snippet → actual comment details
                     # get access to information we want in the second snippet
                     comment_info = item["snippet"]["topLevelComment"]["snippet"]
 

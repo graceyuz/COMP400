@@ -1,5 +1,5 @@
 # Part 2:
-# Comments from the spreadsheet -> VADER evalutation -> Balancing with likes -> CSV
+# Comments from the spreadsheet -> VADER evaluation -> Weighting with likes -> CSV
 
 import csv
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
@@ -18,10 +18,10 @@ def vader_analysis (comment):
         comment: The comment to be evaluated
     
     Returns:
-        VADER's int compound analysis of the comment
+        VADER's compound sentiment score (float) of the comment
     """
 
-    #analyses the polarity of the comment
+    #analyses the sentiment polarity of the comment
     vs = analyzer.polarity_scores(comment)
 
     # return the compound (overall) score
@@ -38,25 +38,25 @@ total_sentiment = 0
 
 with open(file_name, "r", encoding="utf-8") as csv_file, \
      open(output_file, "w", encoding="utf-8", newline="") as output_csv:
-    # specify the delimeter is a comma
+    # read the csv file with comma as the delimiter
     reader = csv.reader(csv_file, delimiter=",")
-    #writting to new file
+    # writing to new file
     writer = csv.writer(output_csv)
 
     # for each row, send the comment to VADER and weight with likes
     for row in reader:
-        # send to VADER
+        # analyze with VADER
         sentiment = vader_analysis(row[1])
 
-        # check like count
+        # get like count
         like_count = int(row[0])
 
-        # add sentiment score and all else to new file for review 
+        # write like count, comment text, and sentiment score to the new file
         writer.writerow([like_count, row[1], sentiment])
 
         # account for the original comment's sentiment
         total_sentiment += sentiment
-        # account for the sentiment of liked comments
+        # add weighted sentiment based on the number of likes
         if like_count > 0:
             total_sentiment += (like_count*sentiment)
         
@@ -71,7 +71,7 @@ with open(file_name, "r", encoding="utf-8") as csv_file, \
         else:                   
             neu_comments += (1 + like_count)
 
-        # total comment tracker
+        # update total weighted and unweighted comment counters
         total_comments_weighted += (1 + like_count)
         unweighted_comments += 1
 
